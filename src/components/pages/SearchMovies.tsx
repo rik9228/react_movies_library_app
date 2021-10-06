@@ -28,6 +28,8 @@ export const SearchMovies: VFC = React.memo(() => {
           sx={{
             display: "flex",
             justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
           }}
         >
           <CircularProgress size={80} />

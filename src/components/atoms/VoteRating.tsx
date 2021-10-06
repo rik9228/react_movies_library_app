@@ -3,7 +3,8 @@ import Rating from "@mui/material/Rating";
 import Stack from "@mui/material/Stack";
 
 export const VoteRating = (props) => {
-  const { voteCount } = props;
+  const { voteCount, readOnlyValue } = props;
+
   return (
     <Stack spacing={1}>
       <Rating
@@ -11,8 +12,14 @@ export const VoteRating = (props) => {
         defaultValue={voteCount}
         precision={0.5}
         max={5}
-        readOnly
+        readOnly={readOnlyValue}
       />
     </Stack>
   );
+};
+
+// props デフォ値
+VoteRating.defaultProps = {
+  voteCount: 5,
+  readOnlyValue: true,
 };

@@ -1,13 +1,13 @@
 import { CircularProgress, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import React, { useContext, useEffect, memo } from "react";
+import React, { useContext, useEffect } from "react";
 import { useFetchPopularMovies } from "../hooks/useFetchPopularMovies";
 import { Movies } from "../organisms/Movies";
 import { MoviePagesContext } from "../providers/MoviePagesProvider";
 
 export const PopularMovies = () => {
   const { fetchPopularMovies } = useFetchPopularMovies();
-  const { movies, isLoading } = useContext(MoviePagesContext);
+  const { isLoading } = useContext(MoviePagesContext);
 
   useEffect(() => {
     fetchPopularMovies();
@@ -28,7 +28,7 @@ export const PopularMovies = () => {
           >
             人気映画20
           </Typography>
-          <Movies movies={movies} />
+          <Movies />
         </>
       )}
     </>

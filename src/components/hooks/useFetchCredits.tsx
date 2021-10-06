@@ -19,8 +19,7 @@ export const useFetchCredits = () => {
       .then((data) => {
         setCredits(data.cast);
       })
-      .catch((error) => console.error(error))
-      .finally(() => console.log("foo"));
+      .catch((error) => console.error(error));
   };
 
   return { fetchCredits, credits };

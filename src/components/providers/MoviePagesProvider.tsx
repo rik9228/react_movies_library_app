@@ -13,6 +13,7 @@ export const MoviePagesProvider = (props) => {
   const [isSearched, setIsSearched] = useState(false);
   const [movies, setMovies] = useState([]);
   const [value, setValue] = useState("");
+  const [favoriteMovies, setFavoriteMovies] = useState([]);
   // クレジットで使う値
   const [movieId, setMovieId] = useState("");
 
@@ -37,6 +38,8 @@ export const MoviePagesProvider = (props) => {
         setIsSearched,
         movieId,
         setMovieId,
+        favoriteMovies,
+        setFavoriteMovies,
       }}
     >
       {children}

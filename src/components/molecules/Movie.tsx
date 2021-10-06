@@ -1,28 +1,38 @@
 // memo化でvalueに変更があった場合の不要な再レンダリングを防ぐ？
 
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Button, Grid, Typography } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
 import { Link } from "react-router-dom";
 import { Box } from "@mui/system";
+import { useAuthContext } from "../providers/AuthProvider";
+import { Img } from "../styles/Img";
+import { MoviePagesContext } from "../providers/MoviePagesProvider";
+import { db } from "../../firebase";
 
-export const Movie = React.memo((props) => {
-  const { movie } = props;
+const Item = styled(Paper)(({ theme }) => ({
+  ...theme.typography.body2,
+  padding: theme.spacing(1),
+  textAlign: "center",
+  color: theme.palette.text.secondary,
+}));
 
-  const Item = styled(Paper)(({ theme }) => ({
-    ...theme.typography.body2,
-    padding: theme.spacing(1),
-    textAlign: "center",
-    color: theme.palette.text.secondary,
-  }));
+export const Movie = (props) => {
+  const { movie, onClickFavorite, onClickAnFavorite } = props;
+  const { user } = useAuthContext();
 
-  const Img = styled("img")({
-    margin: "auto",
-    display: "block",
-    maxWidth: "100%",
-    maxHeight: "100%",
-  });
+  const setMovieDetailhandler = () => {
+    db.collection("movieDetails").doc("info").set({
+      id: movie.id,
+      title: movie.title,
+      overview: movie.overview,
+      poster_path: movie.poster_path,
+      vote_average: movie.vote_average,
+      release_date: movie.release_date,
+      backdrop_path: movie.backdrop_path,
+    });
+  };
 
   return (
     <>
@@ -36,7 +46,12 @@ export const Movie = React.memo((props) => {
             }
           />
           <Box sx={{ mt: 2, display: "block" }}>
-            <Button to={/movie/ + movie.id} color="inherit" component={Link}>
+            <Button
+              to={/movie/ + movie.id}
+              color="inherit"
+              component={Link}
+              onClick={setMovieDetailhandler}
+            >
               {movie.title}
             </Button>
           </Box>
@@ -45,8 +60,31 @@ export const Movie = React.memo((props) => {
               公開日：{movie.release_date}
             </Typography>
           </Box>
+          {user && (
+            <Box sx={{ mt: 2 }}>
+              {!movie.isFavorite ? (
+                <Button
+                  color="success"
+                  fullWidth={true}
+                  variant="contained"
+                  onClick={() => onClickFavorite(movie.id)}
+                >
+                  お気に入り
+                </Button>
+              ) : (
+                <Button
+                  color="success"
+                  fullWidth={true}
+                  variant="outlined"
+                  onClick={() => onClickAnFavorite(movie.id)}
+                >
+                  お気に入り解除
+                </Button>
+              )}
+            </Box>
+          )}
         </Item>
       </Grid>
     </>
   );
-});
+};
